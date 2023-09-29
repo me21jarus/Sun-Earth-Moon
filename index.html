@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body{
+            margin:0;
+            height: 100vh;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            background-image: url(https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80);
+            background-repeat: no-repeat;
+            background-size: cover;
+            overflow: hidden;
+        }
+        .container{
+            font-size: 10px;
+            width: 40em;
+            height: 40em;
+            position: relative;
+        }
+        .sun{
+            position: absolute;
+            top:15em;
+            left: 15em;
+            width: 13em;
+            height: 13em;
+            /* background-color: orange; */
+            background-image: url(https://i.stack.imgur.com/FewTE.jpg);
+            /* background-repeat: no-repeat; */
+            background-size: cover;
+            border-radius: 50%;
+            /* box-shadow: 0 0 3em white; */
+        }
+        .earth,
+        .moon{
+            position: absolute;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+            border-width: 0.1em 0.1em 0 0;
+            border-radius: 50%;
+        }
+        .earth{
+            top: 5em;
+            left: 5em;
+            width:30em;
+            height: 30em;
+            animation: orbit 36.5s linear infinite;
+        }
+        .moon{
+            top: 0em;
+            right: 0em;
+            width:8em;
+            height: 8em;
+            animation: orbit 2.7s linear infinite;
+        }
+        .earth::before,
+        .moon::before{
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+        }
+        .earth::before{
+            top:2.8em;
+            right: 2.8em;
+            width: 3em;
+            height: 3em;
+            /* background-color: aqua; */
+            background-image: url(https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/msnbc/Components/Photo_StoryLevel/080708/080708-earth%20hmed-10a.jpg);
+            background-size: cover;
+        }
+        .moon::before{
+            top:0.8em;
+            right: 0.2em;
+            width: 1.2em;
+            height: 1.2em;
+            /* background-color: silver; */
+            background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/1200px-FullMoon2010.jpg);
+            background-size: cover;
+        }
+        @keyframes orbit{
+            to{
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sun"></div>
+        <div class="earth">
+            <div class="moon"></div>
+        </div>
+    </div>
+
+</body>
+</html>
