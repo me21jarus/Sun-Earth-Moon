@@ -3,99 +3,434 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Enhanced Solar System</title>
     <style>
-        body{
-            margin:0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             height: 100vh;
-            display:flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            background-color: black;
-            background-image: url(https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80);
-            background-repeat: no-repeat;
-            background-size: cover;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
             overflow: hidden;
-        }
-        .container{
-            font-size: 10px;
-            width: 40em;
-            height: 40em;
+            font-family: 'Arial', sans-serif;
             position: relative;
         }
-        .sun{
+
+        /* Animated stars background */
+        .stars {
             position: absolute;
-            top:15em;
-            left: 15em;
-            width: 13em;
-            height: 13em;
-            /* background-color: orange; */
-            background-image: url(https://i.stack.imgur.com/FewTE.jpg);
-            /* background-repeat: no-repeat; */
-            background-size: cover;
-            border-radius: 50%;
-            /* box-shadow: 0 0 3em white; */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
-        .earth,
-        .moon{
+
+        .star {
             position: absolute;
-            border-style: solid;
-            border-color: white transparent transparent transparent;
-            border-width: 0.1em 0.1em 0 0;
+            background: white;
             border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
         }
-        .earth{
-            top: 5em;
-            left: 5em;
-            width:30em;
-            height: 30em;
-            animation: orbit 36.5s linear infinite;
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
         }
-        .moon{
-            top: 0em;
-            right: 0em;
-            width:8em;
-            height: 8em;
-            animation: orbit 2.7s linear infinite;
-        }
-        .earth::before,
-        .moon::before{
-            content: "";
+
+        /* Control panel */
+        .controls {
             position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            z-index: 1000;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .control-group input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            padding: 5px;
+            color: white;
+        }
+
+        .speed-display {
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Solar system container */
+        .solar-system {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            transform-style: preserve-3d;
+        }
+
+        /* Sun */
+        .sun {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            margin: -60px 0 0 -60px;
+            background: radial-gradient(circle at 30% 30%, #ffeb3b, #ff9800, #ff5722);
             border-radius: 50%;
+            box-shadow: 
+                0 0 50px rgba(255, 193, 7, 0.8),
+                0 0 100px rgba(255, 152, 0, 0.6),
+                0 0 150px rgba(255, 87, 34, 0.4);
+            animation: sunPulse 4s ease-in-out infinite alternate;
+            z-index: 10;
         }
-        .earth::before{
-            top:2.8em;
-            right: 2.8em;
-            width: 3em;
-            height: 3em;
-            /* background-color: aqua; */
-            background-image: url(https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/msnbc/Components/Photo_StoryLevel/080708/080708-earth%20hmed-10a.jpg);
-            background-size: cover;
+
+        .sun::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(circle, rgba(255, 193, 7, 0.3), transparent);
+            border-radius: 50%;
+            animation: sunFlare 3s linear infinite;
         }
-        .moon::before{
-            top:0.8em;
-            right: 0.2em;
-            width: 1.2em;
-            height: 1.2em;
-            /* background-color: silver; */
-            background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/1200px-FullMoon2010.jpg);
-            background-size: cover;
+
+        @keyframes sunPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
-        @keyframes orbit{
-            to{
-                transform: rotate(360deg);
+
+        @keyframes sunFlare {
+            0% { transform: rotate(0deg); opacity: 0.7; }
+            100% { transform: rotate(360deg); opacity: 0.3; }
+        }
+
+        /* Orbit paths (visible) */
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform-origin: center;
+        }
+
+        .earth-orbit {
+            width: 400px;
+            height: 400px;
+            margin: -200px 0 0 -200px;
+            animation: earthOrbit 20s linear infinite;
+        }
+
+        .moon-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            margin: -60px 0 0 -60px;
+            animation: moonOrbit 2s linear infinite;
+        }
+
+        /* Earth */
+        .earth {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            margin-left: -25px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6, #0288d1);
+            border-radius: 50%;
+            box-shadow: 
+                inset -10px -10px 0 rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(79, 195, 247, 0.5);
+            animation: earthRotate 2s linear infinite;
+            position: relative;
+        }
+
+        .earth::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 10px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            box-shadow: 
+                15px 10px 0 -2px #4caf50,
+                -5px 15px 0 -1px #4caf50,
+                20px -5px 0 -1px #4caf50;
+        }
+
+        .earth::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Moon */
+        .moon {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            margin-left: -8px;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0, #bdbdbd);
+            border-radius: 50%;
+            box-shadow: 
+                inset -3px -3px 0 rgba(0, 0, 0, 0.3),
+                0 0 10px rgba(245, 245, 245, 0.3);
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 3px;
+            height: 3px;
+            background: #9e9e9e;
+            border-radius: 50%;
+            box-shadow: 
+                6px 1px 0 -1px #9e9e9e,
+                2px 8px 0 -2px #9e9e9e;
+        }
+
+        /* Animations */
+        @keyframes earthOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes moonOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes earthRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Info panel */
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            font-size: 12px;
+            max-width: 250px;
+        }
+
+        .info-panel h3 {
+            margin-bottom: 10px;
+            color: #ffeb3b;
+            font-size: 14px;
+        }
+
+        .info-panel p {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .solar-system {
+                width: 400px;
+                height: 400px;
+                transform: scale(0.8);
+            }
+            
+            .controls, .info-panel {
+                font-size: 10px;
+                padding: 15px;
+            }
+            
+            .earth-orbit {
+                width: 200px;
+                height: 200px;
+                margin: -100px 0 0 -100px;
+            }
+            
+            .moon-orbit {
+                width: 60px;
+                height: 60px;
+                margin: -30px 0 0 -30px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="sun"></div>
-        <div class="earth">
-            <div class="moon"></div>
+    <!-- Animated stars -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Control panel -->
+    <div class="controls">
+        <h3 style="margin-bottom: 15px; color: #ffeb3b;">Solar System Controls</h3>
+        <div class="control-group">
+            <label for="earthSpeed">Earth Orbit Speed</label>
+            <input type="range" id="earthSpeed" min="0.1" max="3" step="0.1" value="1">
+            <div class="speed-display" id="earthSpeedDisplay">1x</div>
+        </div>
+        <div class="control-group">
+            <label for="moonSpeed">Moon Orbit Speed</label>
+            <input type="range" id="moonSpeed" min="0.1" max="5" step="0.1" value="1">
+            <div class="speed-display" id="moonSpeedDisplay">1x</div>
+        </div>
+        <div class="control-group">
+            <label for="sunGlow">Sun Intensity</label>
+            <input type="range" id="sunGlow" min="0.3" max="2" step="0.1" value="1">
+            <div class="speed-display" id="sunGlowDisplay">1x</div>
         </div>
     </div>
 
+    <!-- Solar system -->
+    <div class="solar-system">
+        <div class="sun"></div>
+        <div class="orbit earth-orbit">
+            <div class="earth">
+                <div class="orbit moon-orbit">
+                    <div class="moon"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="info-panel">
+        <h3>Solar System Facts</h3>
+        <p><strong>Earth's Orbit:</strong> 365.25 days</p>
+        <p><strong>Moon's Orbit:</strong> 27.3 days</p>
+        <p><strong>Earth's Rotation:</strong> 24 hours</p>
+        <p><strong>Distance to Sun:</strong> 93 million miles</p>
+        <p><strong>Distance to Moon:</strong> 238,855 miles</p>
+        <p><em>Use controls to adjust speeds and effects!</em></p>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Control system
+        function initControls() {
+            const earthSpeedSlider = document.getElementById('earthSpeed');
+            const moonSpeedSlider = document.getElementById('moonSpeed');
+            const sunGlowSlider = document.getElementById('sunGlow');
+            
+            const earthSpeedDisplay = document.getElementById('earthSpeedDisplay');
+            const moonSpeedDisplay = document.getElementById('moonSpeedDisplay');
+            const sunGlowDisplay = document.getElementById('sunGlowDisplay');
+            
+            const earthOrbit = document.querySelector('.earth-orbit');
+            const moonOrbit = document.querySelector('.moon-orbit');
+            const sun = document.querySelector('.sun');
+            
+            earthSpeedSlider.addEventListener('input', (e) => {
+                const speed = e.target.value;
+                earthSpeedDisplay.textContent = speed + 'x';
+                earthOrbit.style.animationDuration = (20 / speed) + 's';
+            });
+            
+            moonSpeedSlider.addEventListener('input', (e) => {
+                const speed = e.target.value;
+                moonSpeedDisplay.textContent = speed + 'x';
+                moonOrbit.style.animationDuration = (2 / speed) + 's';
+            });
+            
+            sunGlowSlider.addEventListener('input', (e) => {
+                const intensity = e.target.value;
+                sunGlowDisplay.textContent = intensity + 'x';
+                const baseGlow = 50 * intensity;
+                const mediumGlow = 100 * intensity;
+                const farGlow = 150 * intensity;
+                sun.style.boxShadow = `
+                    0 0 ${baseGlow}px rgba(255, 193, 7, ${0.8 * intensity}),
+                    0 0 ${mediumGlow}px rgba(255, 152, 0, ${0.6 * intensity}),
+                    0 0 ${farGlow}px rgba(255, 87, 34, ${0.4 * intensity})
+                `;
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            initControls();
+        });
+
+        // Add some interactive hover effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const earth = document.querySelector('.earth');
+            const moon = document.querySelector('.moon');
+            const sun = document.querySelector('.sun');
+            
+            [earth, moon, sun].forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    element.style.transform = 'scale(1.2)';
+                    element.style.transition = 'transform 0.3s ease';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
